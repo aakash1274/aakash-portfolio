@@ -28,6 +28,7 @@
             --gradient-primary: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
             --gradient-secondary: linear-gradient(135deg, var(--accent-secondary), var(--accent-tertiary));
             --gradient-tertiary: linear-gradient(135deg, var(--accent-tertiary), var(--accent-primary));
+            --nav-drawer-width: 280px;
         }
 
         /* Light theme variables */
@@ -180,6 +181,78 @@
             left: 0;
         }
 
+        /* Hamburger Menu Button */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 8px;
+            min-width: 44px;
+            min-height: 44px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--text-primary);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        /* Hamburger X animation: 3 spans × 2px + 2 gaps × 5px = 16px total.
+           Middle span sits 7px from top/bottom spans, so translateY(±7px) forms an X. */
+        .hamburger.open span:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+
+        .hamburger.open span:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+
+        .hamburger.open span:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+
+        /* Mobile nav overlay */
+        .nav-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Nav brand (logo) */
+        .nav-brand {
+            display: none;
+            font-weight: 900;
+            font-size: 1.2rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+
         /* Hero Section */
         .hero {
             min-height: 100vh;
@@ -188,7 +261,7 @@
             justify-content: center;
             text-align: center;
             position: relative;
-            padding: 0 20px;
+            padding: 100px 20px 40px;
         }
 
         .hero-content {
@@ -356,7 +429,7 @@
         /* Project Cards */
         .projects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
             gap: 30px;
             margin-top: 60px;
         }
@@ -442,7 +515,7 @@
         /* Enhanced Skills Grid */
         .skills-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
             gap: 30px;
             margin-top: 60px;
         }
@@ -829,11 +902,93 @@
         }
 
         /* Responsive Design */
+
+        /* Tablet breakpoint */
+        @media (max-width: 1024px) {
+            .section {
+                padding: 80px 20px;
+            }
+
+            .theme-toggle {
+                top: auto;
+                bottom: 110px;
+                right: 20px;
+                transform: none;
+                padding: 10px;
+                font-size: 20px;
+            }
+
+            .theme-toggle:hover {
+                transform: scale(1.1);
+            }
+        }
+
+        /* Mobile breakpoint */
         @media (max-width: 768px) {
+            /* Navigation */
+            .nav-container {
+                top: 0;
+                left: 0;
+                right: 0;
+                transform: none;
+                border-radius: 0 0 20px 20px;
+                padding: 10px 20px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+                z-index: 1003;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-brand {
+                display: block;
+            }
+
+            .nav-overlay {
+                display: block;
+            }
+
             .nav-menu {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: min(var(--nav-drawer-width), 80vw);
+                height: 100vh;
+                background: var(--bg-secondary);
+                border-left: 1px solid var(--glass-border);
                 flex-direction: column;
-                gap: 15px;
-                padding: 15px;
+                gap: 8px;
+                padding: 80px 20px 30px;
+                z-index: 1002;
+                transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+                overflow-y: auto;
+                box-shadow: -10px 0 30px rgba(0, 0, 0, 0.3);
+            }
+
+            .nav-menu.open {
+                right: 0;
+            }
+
+            .nav-item {
+                padding: 14px 20px;
+                font-size: 16px;
+                min-height: 44px;
+                display: flex;
+                align-items: center;
+                border-radius: 12px;
+            }
+
+            /* Hero */
+            .hero {
+                padding: 90px 20px 60px;
+            }
+
+            .hero-content {
+                max-width: 100%;
             }
 
             .hero-cta {
@@ -841,36 +996,174 @@
                 align-items: center;
             }
 
-            .contact-container {
-                grid-template-columns: 1fr;
-                gap: 30px;
+            .btn {
+                width: 100%;
+                max-width: 280px;
+                text-align: center;
             }
 
+            /* Sections */
+            .section {
+                padding: 60px 16px;
+            }
+
+            .section-title {
+                margin-bottom: 40px;
+            }
+
+            /* Projects */
+            .projects-grid {
+                gap: 20px;
+                margin-top: 40px;
+            }
+
+            .project-card {
+                padding: 24px;
+            }
+
+            /* Skills */
+            .skills-container {
+                grid-template-columns: 1fr 1fr;
+                gap: 16px;
+                margin-top: 40px;
+            }
+
+            .skill-item {
+                padding: 16px;
+            }
+
+            /* Stats */
+            .stats-container {
+                grid-template-columns: 1fr 1fr;
+                gap: 16px;
+                margin: 40px 0;
+            }
+
+            .stat-number {
+                font-size: 2.2rem;
+            }
+
+            /* Timeline */
             .timeline::before {
-                left: 30px;
+                left: 20px;
             }
 
             .timeline-item {
                 flex-direction: column;
-                padding-left: 60px;
+                padding-left: 50px;
+            }
+
+            .timeline-item:nth-child(even) {
+                flex-direction: column;
             }
 
             .timeline-dot {
-                left: 30px;
+                left: 20px;
+                top: 15px;
             }
 
+            .timeline-content {
+                margin: 0;
+            }
+
+            /* Contact */
+            .contact-container {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .contact-info,
+            .contact-form {
+                padding: 24px;
+            }
+
+            /* Achievements */
+            .achievements-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 16px;
+            }
+
+            .achievement-card {
+                padding: 20px 16px;
+            }
+
+            /* Floating actions */
             .floating-actions {
-                right: 15px;
-                bottom: 15px;
+                right: 12px;
+                bottom: 12px;
+                gap: 10px;
             }
 
+            .floating-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 18px;
+            }
+
+            /* Theme toggle */
+            .theme-toggle {
+                top: auto;
+                bottom: 180px;
+                right: 12px;
+                transform: none;
+                padding: 10px;
+                font-size: 18px;
+            }
+
+            .theme-toggle:hover {
+                transform: scale(1.1);
+            }
+
+            /* Resume label */
             .resume-label {
-                right: 15px;
-                bottom: 105px;
+                right: 12px;
+                bottom: 88px;
+                font-size: 11px;
+                padding: 8px 10px;
             }
 
+            /* Code terminal */
+            .code-terminal {
+                padding: 16px;
+                margin: 24px 0;
+                font-size: 13px;
+                overflow-x: auto;
+            }
+
+            /* Footer */
+            .footer-content {
+                flex-direction: column;
+                gap: 4px;
+                font-size: 14px;
+            }
+        }
+
+        /* Small mobile breakpoint */
+        @media (max-width: 480px) {
             .skills-container {
                 grid-template-columns: 1fr;
+            }
+
+            .achievements-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-container {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .tech-stack {
+                gap: 6px;
+            }
+
+            .tech-tag {
+                font-size: 11px;
+                padding: 4px 10px;
+            }
+
+            .hero-badge {
+                font-size: 12px;
+                padding: 6px 16px;
             }
         }
 
@@ -904,9 +1197,18 @@
         <div class="bg-particles" id="bgParticles"></div>
     </div>
 
+    <!-- Mobile Nav Overlay -->
+    <div class="nav-overlay" id="navOverlay"></div>
+
     <!-- Navigation -->
     <nav class="nav-container">
-        <div class="nav-menu">
+        <a href="#home" class="nav-brand" aria-label="Aakash Eti Home">AE</a>
+        <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navMenu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="nav-menu" id="navMenu" role="navigation">
             <a href="#home" class="nav-item">Home</a>
             <a href="#about" class="nav-item">About</a>
             <a href="#projects" class="nav-item">Projects</a>
@@ -1396,6 +1698,52 @@
             initContactForm();
             initFloatingButtons();
             initEnhancedThemeToggle();
+            initHamburgerMenu();
+        }
+
+        // Hamburger menu
+        function initHamburgerMenu() {
+            const hamburger = document.getElementById('hamburgerBtn');
+            const navMenu = document.getElementById('navMenu');
+            const navOverlay = document.getElementById('navOverlay');
+
+            if (!hamburger) return;
+
+            function openMenu() {
+                hamburger.classList.add('open');
+                navMenu.classList.add('open');
+                navOverlay.classList.add('active');
+                hamburger.setAttribute('aria-expanded', 'true');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeMenu() {
+                hamburger.classList.remove('open');
+                navMenu.classList.remove('open');
+                navOverlay.classList.remove('active');
+                hamburger.setAttribute('aria-expanded', 'false');
+                document.body.style.overflow = '';
+            }
+
+            hamburger.addEventListener('click', () => {
+                if (navMenu.classList.contains('open')) {
+                    closeMenu();
+                } else {
+                    openMenu();
+                }
+            });
+
+            navOverlay.addEventListener('click', closeMenu);
+
+            navMenu.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', closeMenu);
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && navMenu.classList.contains('open')) {
+                    closeMenu();
+                }
+            });
         }
 
         // Custom cursor implementation

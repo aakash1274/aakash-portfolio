@@ -654,7 +654,13 @@
                 transparent 100%
             );
             transform: rotate(45deg);
-            animation: shimmer 6s infinite;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .achievement-card:hover::before {
+            opacity: 1;
+            animation: shimmer 3s ease infinite;
         }
 
         .achievement-card:hover {
@@ -1246,11 +1252,11 @@
             mask-composite: exclude;
             opacity: 0;
             transition: opacity 0.3s ease;
-            animation: gradient-shift 3s ease infinite;
         }
 
         .project-card:hover::after {
             opacity: 1;
+            animation: gradient-shift 3s ease infinite;
         }
 
         /* Section dividers */
